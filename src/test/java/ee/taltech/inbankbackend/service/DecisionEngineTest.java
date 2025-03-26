@@ -1,10 +1,7 @@
 package ee.taltech.inbankbackend.service;
 
 import ee.taltech.inbankbackend.config.DecisionEngineConstants;
-import ee.taltech.inbankbackend.exceptions.InvalidLoanAmountException;
-import ee.taltech.inbankbackend.exceptions.InvalidLoanPeriodException;
-import ee.taltech.inbankbackend.exceptions.InvalidPersonalCodeException;
-import ee.taltech.inbankbackend.exceptions.NoValidLoanException;
+import ee.taltech.inbankbackend.exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +21,7 @@ class DecisionEngineTest {
     private String segment1PersonalCode;
     private String segment2PersonalCode;
     private String segment3PersonalCode;
+    private String underagePersonalCode;
 
     @BeforeEach
     void setUp() {
@@ -31,6 +29,7 @@ class DecisionEngineTest {
         segment1PersonalCode = "50307172740";
         segment2PersonalCode = "38411266610";
         segment3PersonalCode = "35006069515";
+        underagePersonalCode = "30910130595";
     }
 
     @Test
@@ -106,6 +105,18 @@ class DecisionEngineTest {
     void testNoValidLoanFound() {
         assertThrows(NoValidLoanException.class,
                 () -> decisionEngine.calculateApprovedLoan(debtorPersonalCode, 10000L, 60));
+    }
+
+    @Test
+    void testInvalidAgeTooOld() {
+        assertThrows(InvalidAgeException.class,
+                () -> decisionEngine.calculateApprovedLoan(segment3PersonalCode, 3000L, 48));
+    }
+
+    @Test
+    void testInvalidAgeTooYoung() {
+        assertThrows(InvalidAgeException.class,
+                () -> decisionEngine.calculateApprovedLoan(underagePersonalCode, 2400L, 24));
     }
 
 }

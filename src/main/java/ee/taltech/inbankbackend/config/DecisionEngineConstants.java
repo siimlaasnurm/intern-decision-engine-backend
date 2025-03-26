@@ -11,4 +11,6 @@ public class DecisionEngineConstants {
     public static final Integer SEGMENT_1_CREDIT_MODIFIER = 100;
     public static final Integer SEGMENT_2_CREDIT_MODIFIER = 300;
     public static final Integer SEGMENT_3_CREDIT_MODIFIER = 1000;
+    public static final Double MINIMUM_CREDIT_SCORE_TO_APPROVE = 0.1;
+    public static final Integer EXPECTED_LIFELINE = 76;
 }
